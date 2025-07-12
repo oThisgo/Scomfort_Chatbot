@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SComfort - O Tênis Mais Confortável do Mundo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- favicon -->
+    <link rel="icon" href="/static/images/scomfort.png" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat_style.css') }}">
+    <style>
+        /* Reset e estilos gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #FFB627; /* Amarelo/laranja */
+            --secondary: #2AACB8; /* Azul-turquesa */
+            --dark: #0A2342; /* Azul-marinho */
+            --light: #FFFFFF;
+            --gray: #F5F5F5;
+            --text: #333333;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-color: var(--light);
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--dark);
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(255, 182, 39, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 182, 39, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--light);
+            box-shadow: 0 4px 15px rgba(42, 172, 184, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 10px 20px rgba(42, 172, 184, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--dark);
+            box-shadow: 0 10px 20px rgba(255, 182, 39, 0.2);
+        }
+        
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+        
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text);
+            margin: auto auto 60px auto;
+            max-width: 100%;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 80px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-list {
+            display: flex;
+            margin-right: 30px;
+        }
+        
+        .nav-item {
+            margin: 0 15px;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--secondary);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+            z-index: 1002;
+        }
+        
+        /* Mobile Menu Sidebar */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .mobile-menu-sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100%;
+            background: var(--light);
+            z-index: 1001;
+            padding: 80px 20px 40px;
+            transition: all 0.4s ease;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-menu-sidebar.active {
+            right: 0;
+        }
+        
+        .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        .mobile-nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .mobile-nav-item {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        
+        .mobile-nav-link {
+            font-weight: 600;
+            font-size: 16px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav-link:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .mobile-cta {
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .mobile-cta .btn {
+            width: 100%;
+        }
+        
+        .mobile-social {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .mobile-social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+        
+        .mobile-social-link:hover {
+            background: var(--secondary);
+            color: var(--light);
+        }
+        
+        /* Prevent body scroll when menu is open */
+        body.menu-open {
+            overflow: hidden;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-text {
+            flex: 1;
+            padding-right: 50px;
+        }
+        
+        .hero-title {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            color: var(--dark);
+        }
+        
+        .hero-title span {
+            color: var(--secondary);
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text);
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .hero-image {
+            flex: 1;
+            position: relative;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            transform: rotate(-15deg);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: rotate(-5deg) translateY(0px);
+            }
+            50% {
+                transform: rotate(-5deg) translateY(-20px);
+            }
+            100% {
+                transform: rotate(-5deg) translateY(0px);
+            }
+        }
+        
+        .hero-shape {
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 182, 39, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .hero-shape-2 {
+            position: absolute;
+            top: 50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(42, 172, 184, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .hero-badge {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            background: var(--primary);
+            color: var(--dark);
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transform: rotate(15deg);
+            box-shadow: 0 5px 15px rgba(255, 182, 39, 0.3);
+            z-index: 3;
+        }
+        
+        /* Features Section */
+        .features {
+            background: var(--light);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: var(--gray);
+            border-radius: 20px;
+            padding: 40px 30px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: var(--secondary);
+            box-shadow: 0 10px 20px rgba(42, 172, 184, 0.1);
+        }
+        
+        .feature-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .feature-desc {
+            color: var(--text);
+            font-size: 16px;
+        }
+        
+        /* Parallax Section */
+        .parallax {
+            position: relative;
+            height: 500px;
+            background: url('/static/images/parallax.png') no-repeat fixed;;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--light);
+        }
+        
+        .parallax::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 35, 66, 0.8);
+        }
+        
+        .parallax-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .parallax-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .parallax-text {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        /* Products Section */
+        .products {
+            background: var(--gray);
+        }
+        
+        .product-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            border-radius: 50px;
+            background: var(--light);
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .product-tab {
+            padding: 10px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .product-tab.active {
+            background: var(--secondary);
+            color: var(--light);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .product-card {
+            background: var(--light);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-image {
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--primary);
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 5px 15px;
+            border-radius: 50px;
+        }
+        
+        .product-content {
+            padding: 30px;
+        }
+        
+        .product-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .product-desc {
+            color: var(--text);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .product-colors {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .color-option {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.2);
+        }
+        
+        .product-btn {
+            width: 100%;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background: var(--light);
+        }
+        
+        .testimonial-slider {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .testimonial-card {
+            background: var(--gray);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 5px solid var(--light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .testimonial-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: var(--text);
+            font-size: 18px;
+        }
+        
+        .testimonial-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .testimonial-position {
+            color: var(--secondary);
+            font-size: 14px;
+        }
+        
+        .testimonial-rating {
+            margin-top: 15px;
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 10px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .slider-dot.active {
+            background: var(--secondary);
+            transform: scale(1.2);
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            background: var(--gray);
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 70px;
+            left: 50px;
+            right: 50px;
+            height: 3px;
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            width: 25%;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-weight: 600;
+            font-size: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(42, 172, 184, 0.3);
+        }
+        
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+            color: var(--dark);
+            font-size: 18px;
+        }
+        
+        .step-desc {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text);
+        }
+        
+        /* FAQ Section */
+        .faq {
+            background: var(--light);
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            background: var(--gray);
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: #eee;
+        }
+        
+        .faq-question i {
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            background: var(--light);
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-answer.active {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: var(--secondary);
+            color: var(--light);
+            text-align: center;
+        }
+        
+        .cta .section-title {
+            color: var(--light);
+        }
+        
+        .cta .section-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .cta-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .cta-input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .cta-btn {
+            background: var(--primary);
+            color: var(--dark);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 182, 39, 0.3);
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 182, 39, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--light);
+            padding: 80px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--light);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .footer-desc {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .section-title {
+                font-size: 36px;
+            }
+            
+            .hero-title {
+                font-size: 48px;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 870px) {
+            .section {
+                padding: 70px 0;
+            }
+
+            .btn-comprar {
+                display: none;
+            }
+            
+            .nav-list {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                padding: 150px 0 80px;
+            }
+            
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-text {
+                padding-right: 0;
+                margin-bottom: 50px;
+            }
+            
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .hero-subtitle {
+                margin: 0 auto 30px;
+            }
+            
+            .hero-btns {
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .steps::before {
+                display: none;
+            }
+            
+            .step {
+                width: 100%;
+                margin-bottom: 40px;
+            }
+            
+            .cta-form {
+                flex-direction: column;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .hero-title {
+                font-size: 32px;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+            
+            .product-tabs {
+                flex-direction: column;
+                gap: 10px;
+                background: transparent;
+                box-shadow: none;
+                padding: 0;
+            }
+            
+            .product-tab {
+                background: var(--light);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <img src="{{ url_for('static', filename='images/scomfort.png') }}" alt="SComfort Logo">
+            </a>
+            <nav class="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#" class="nav-link">Início</a></li>
+                    <li class="nav-item"><a href="#features" class="nav-link">Características</a></li>
+                    <li class="nav-item"><a href="#products" class="nav-link">Produtos</a></li>
+                    <li class="nav-item"><a href="#how-it-works" class="nav-link">Como Funciona</a></li>
+                    <li class="nav-item"><a href="#faq" class="nav-link">FAQ</a></li>
+                </ul>
+                <a href="#cta" class="btn  btn-comprar">Comprar Agora</a>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Sidebar -->
+    <div class="mobile-menu-overlay"></div>
+    <div class="mobile-menu-sidebar">
+        <button class="mobile-menu-close">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="mobile-nav-list">
+            <li class="mobile-nav-item"><a href="#" class="mobile-nav-link">Início</a></li>
+            <li class="mobile-nav-item"><a href="#features" class="mobile-nav-link">Características</a></li>
+            <li class="mobile-nav-item"><a href="#products" class="mobile-nav-link">Produtos</a></li>
+            <li class="mobile-nav-item"><a href="#how-it-works" class="mobile-nav-link">Como Funciona</a></li>
+            <li class="mobile-nav-item"><a href="#faq" class="mobile-nav-link">FAQ</a></li>
+        </ul>
+        <div class="mobile-cta">
+            <a href="#cta" class="btn">Comprar Agora</a>
+        </div>
+        <div class="mobile-social">
+            <a href="#" class="mobile-social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="mobile-social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="mobile-social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="mobile-social-link"><i class="fab fa-tiktok"></i></a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Caminhe como se estivesse <span>flutuando</span></h1>
+                    <p class="hero-subtitle">Descubra o tênis mais confortável do mundo, projetado para profissionais que passam o dia todo em pé. Tecnologia exclusiva que proporciona a sensação de caminhar nas nuvens.</p>
+                    <div class="hero-btns">
+                        <a href="#products" class="btn">Ver Modelos</a>
+                        <a href="#how-it-works" class="btn btn-outline">Como Funciona</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="{{ url_for('static', filename='images/tenis1.png') }}" alt="SComfort Tênis">
+                </div>
+            </div>
+        </div>
+        <div class="hero-shape"></div>
+        <div class="hero-shape-2"></div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features section">
+        <div class="container">
+            <h2 class="section-title text-center">Por que escolher SComfort?</h2>
+            <p class="section-subtitle text-center mx-auto">Nossos tênis são projetados com tecnologia de ponta para oferecer o máximo de conforto durante todo o dia, seja no trabalho ou no lazer.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-feather-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Ultra Leve</h3>
+                    <p class="feature-desc">Pesando apenas 250g, você mal sentirá que está usando um calçado. Ideal para longas jornadas de trabalho.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <h3 class="feature-title">Respirável</h3>
+                    <p class="feature-desc">Tecido especial que permite a circulação de ar, mantendo seus pés frescos mesmo após horas de uso.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-recycle"></i>
+                    </div>
+                    <h3 class="feature-title">Sustentável</h3>
+                    <p class="feature-desc">Fabricado com materiais reciclados e processos eco-friendly. Bom para você, melhor para o planeta.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3 class="feature-title">Tecnologia CloudStep</h3>
+                    <p class="feature-desc">Nossa palmilha exclusiva absorve impactos e proporciona a sensação de caminhar sobre nuvens.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <h3 class="feature-title">Lavável</h3>
+                    <p class="feature-desc">Pode ser lavado na máquina sem perder forma ou conforto. Sempre limpo, sempre novo.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shoe-prints"></i>
+                    </div>
+                    <h3 class="feature-title">Adaptável</h3>
+                    <p class="feature-desc">Molda-se ao seu pé para um ajuste perfeito, proporcionando suporte personalizado.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax Section -->
+    <section class="parallax">
+        <div class="parallax-content">
+            <h2 class="parallax-title">Conforto que transforma seu dia</h2>
+            <p class="parallax-text">Mais de 50.000 profissionais já descobriram como é trabalhar com o máximo de conforto. Junte-se a eles e transforme sua experiência diária.</p>
+            <a href="#products" class="btn">Experimente Agora</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products section">
+        <div class="container">
+            <h2 class="section-title text-center">Nossos Modelos</h2>
+            <p class="section-subtitle text-center mx-auto">Escolha o modelo que melhor se adapta ao seu estilo e necessidade. Todos com a mesma tecnologia de conforto incomparável.</p>
+            
+            <div class="product-tabs">
+                <div class="product-tab active">Todos</div>
+                <div class="product-tab">Masculino</div>
+                <div class="product-tab">Feminino</div>
+            </div>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="{{ url_for('static', filename='images/tenis2.png') }}" alt="SComfort Classic">
+                        <div class="product-badge">Mais Vendido</div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">SComfort Classic</h3>
+                        <p class="product-desc">O modelo original que revolucionou o mercado. Design minimalista e conforto máximo.</p>
+                        <div class="product-price">R$ 299,90</div>
+                        <div class="product-colors">
+                            <div class="color-option" style="background-color: #2AACB8;"></div>
+                            <div class="color-option" style="background-color: #333;"></div>
+                            <div class="color-option" style="background-color: #FFB627;"></div>
+                            <div class="color-option" style="background-color: #fff; border: 1px solid #ddd;"></div>
+                        </div>
+                        <a href="#" class="btn product-btn">Comprar</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="{{ url_for('static', filename='images/tenis3.png') }}" alt="SComfort Runner">
+                        <div class="product-badge">Novo</div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">SComfort Runner</h3>
+                        <p class="product-desc">Para quem precisa de mais suporte e amortecimento. Ideal para longas caminhadas.</p>
+                        <div class="product-price">R$ 349,90</div>
+                        <div class="product-colors">
+                            <div class="color-option" style="background-color: #2AACB8;"></div>
+                            <div class="color-option" style="background-color: #333;"></div>
+                            <div class="color-option" style="background-color: #FFB627;"></div>
+                        </div>
+                        <a href="#" class="btn product-btn">Comprar</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="{{ url_for('static', filename='images/tenis4.png') }}" alt="SComfort Slip-on">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">SComfort Slip-on</h3>
+                        <p class="product-desc">Praticidade e conforto. Sem cadarços, fácil de calçar e com o mesmo conforto incrível.</p>
+                        <div class="product-price">R$ 279,90</div>
+                        <div class="product-colors">
+                            <div class="color-option" style="background-color: #2AACB8;"></div>
+                            <div class="color-option" style="background-color: #333;"></div>
+                            <div class="color-option" style="background-color: #FFB627;"></div>
+                            <div class="color-option" style="background-color: #fff; border: 1px solid #ddd;"></div>
+                        </div>
+                        <a href="#" class="btn product-btn">Comprar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials section">
+        <div class="container">
+            <h2 class="section-title text-center">O que dizem nossos clientes</h2>
+            <p class="section-subtitle text-center mx-auto">Milhares de profissionais já transformaram sua rotina com SComfort. Veja o que eles têm a dizer.</p>
+            
+            <div class="testimonial-slider">
+                <div class="testimonial-card">
+                    <div class="testimonial-image">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Cliente">
+                    </div>
+                    <p class="testimonial-text">"Trabalho como desenvolvedor e passo o dia todo sentado, mas quando preciso me movimentar, é como se estivesse flutuando. Nunca usei um tênis tão confortável. Já estou no meu terceiro par!"</p>
+                    <h4 class="testimonial-name">Ricardo Almeida</h4>
+                    <p class="testimonial-position">Desenvolvedor de Software</p>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- <div class="slider-nav">
+                <div class="slider-dot active"></div>
+                <div class="slider-dot"></div>
+                <div class="slider-dot"></div>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works section">
+        <div class="container">
+            <h2 class="section-title text-center">Como Funciona</h2>
+            <p class="section-subtitle text-center mx-auto">Comprar seu SComfort é simples e rápido. Siga estes passos e receba o tênis mais confortável do mundo em sua casa.</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Escolha seu Modelo</h3>
+                    <p class="step-desc">Selecione o modelo, cor e tamanho que melhor se adapta ao seu estilo.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Faça seu Pedido</h3>
+                    <p class="step-desc">Processo de compra simples e seguro, com várias opções de pagamento.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Receba em Casa</h3>
+                    <p class="step-desc">Entrega rápida para todo o Brasil. Frete grátis para compras acima de R$ 300.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Experimente</h3>
+                    <p class="step-desc">30 dias de garantia. Se não gostar, devolvemos seu dinheiro.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq section">
+        <div class="container">
+            <h2 class="section-title text-center">Perguntas Frequentes</h2>
+            <p class="section-subtitle text-center mx-auto">Tire suas dúvidas sobre nossos produtos e serviços. Se não encontrar o que procura, entre em contato conosco.</p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Como saber meu tamanho correto?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Recomendamos que você meça seu pé e consulte nossa tabela de tamanhos. Nossos tênis têm um ajuste confortável e adaptável, mas é importante escolher o tamanho correto para a melhor experiência.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Qual é o prazo de entrega?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        O prazo de entrega varia de acordo com sua localização, mas geralmente é de 3 a 7 dias úteis para capitais e regiões metropolitanas, e de 7 a 15 dias úteis para outras localidades.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Como funciona a garantia de 30 dias?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Você pode usar o tênis por até 30 dias. Se não estiver satisfeito, basta entrar em contato conosco para solicitar a devolução. Reembolsamos 100% do valor, sem perguntas.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Os tênis são impermeáveis?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Nossos tênis têm tratamento repelente à água, mas não são totalmente impermeáveis. Eles resistem bem a chuvas leves e respingos, mas não recomendamos uso em chuvas fortes ou imersão em água.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Como devo cuidar do meu SComfort?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Nossos tênis são laváveis na máquina em ciclo delicado com água fria. Recomendamos remover a palmilha antes de lavar e deixar secar naturalmente, longe de fontes diretas de calor.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta section">
+        <div class="container">
+            <h2 class="section-title">Receba novidades e ofertas exclusivas</h2>
+            <p class="section-subtitle">Cadastre-se para receber lançamentos em primeira mão e promoções especiais para assinantes.</p>
+            
+            <form class="cta-form">
+                <input type="email" placeholder="Seu melhor e-mail" class="cta-input" required>
+                <button type="submit" class="cta-btn">Cadastrar</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <img src="{{ url_for('static', filename='images/tenis1.png') }}" alt="SComfort Tênis">
+                       
+                    </div>
+                    <p class="footer-desc">Transformando a experiência de caminhar com tecnologia e design inovadores. Conforto incomparável para profissionais que valorizam bem-estar.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-title">Produtos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Classic</a></li>
+                        <li><a href="#">Runner</a></li>
+                        <li><a href="#">Slip-on</a></li>
+                        <li><a href="#">Acessórios</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-title">Empresa</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Sobre nós</a></li>
+                        <li><a href="#">Sustentabilidade</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Carreiras</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-title">Suporte</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Envio e Entregas</a></li>
+                        <li><a href="#">Política de Trocas</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 SComfort. Todos os direitos reservados.</p>
+                <p>Este é um site ficticio, desenvolvido pelo <a href="https://profvitorhugo.online" style="text-decoration: underline;">Prof Vitor Hugo</a> para uma disciplina.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript para funcionalidades básicas -->
+    <script>
+        // Menu mobile toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+        const mobileMenuSidebar = document.querySelector('.mobile-menu-sidebar');
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        const body = document.body;
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        
+        // Open mobile menu
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuSidebar.classList.add('active');
+            mobileMenuOverlay.classList.add('active');
+            body.classList.add('menu-open');
+        });
+        
+        // Close mobile menu function
+        function closeMobileMenu() {
+            mobileMenuSidebar.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            body.classList.remove('menu-open');
+        }
+        
+        // Close mobile menu events
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        
+        // Close menu when clicking on a link
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+        
+        // Header scroll effect
+        const header = document.querySelector('header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
+            }
+        });
+        
+        // FAQ Accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+                
+                // Close all other answers
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    q.classList.remove('active');
+                    q.nextElementSibling.classList.remove('active');
+                });
+                
+                // Toggle current answer
+                if (!isActive) {
+                    question.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+        
+        // Product Tabs
+        const productTabs = document.querySelectorAll('.product-tab');
+        
+        productTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.product-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                tab.classList.add('active');
+                
+                // Here you would typically filter products based on the selected tab
+                // For this demo, we're just toggling the active state
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <div class="chat-widget">
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">
+                <h3>ChatScomfort</h3>
+                <button id="close-btn" style="background:none; border:none; color:white; font-size: 20px; cursor: pointer; margin-left: auto;">&times;</button>
+            </div>
+            <div class="chat-body" id="chat-body">
+                </div>
+            <div class="chat-footer">
+                <input type="text" id="chat-input" placeholder="Digite sua dúvida aqui...">
+                <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div class="chat-bubble" id="chat-bubble">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='chat_script.js') }}"></script>
+
+</body>
+</html>
