@@ -1,4 +1,3 @@
-// static/chat_script.js
 document.addEventListener('DOMContentLoaded', () => {
     // Elementos do DOM
     const chatBubble = document.getElementById('chat-bubble');
