@@ -19,8 +19,6 @@ ChatScomfort é um assistente virtual especialista, integrado diretamente ao e-c
 
 ![ChatScomfort Demo](LINK_PARA_SEU_GIF_AQUI.gif)
 
-*(**Nota:** Recomendamos fortemente gravar uma demonstração do chatbot em ação e substituir o link acima.)*
-
 ## ✨ Características Principais
 
 * **Disponibilidade 24/7:** Atende clientes a qualquer hora do dia, eliminando filas de espera.
