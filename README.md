@@ -48,7 +48,6 @@ Enquanto a maioria dos chatbots de e-commerce no mercado são reativos e baseado
 * **Backend:** Python 3, Flask
 * **Inteligência Artificial:** Google Gemini API (via `google-generativeai`)
 * **Frontend:** HTML5, CSS3, JavaScript
-* **Análise de Dados (para geração de insights):** Pandas
 * **Gerenciamento de Dependências:** `pip` e `requirements.txt`
 * **Gerenciamento de Chaves de API:** `python-dotenv`
 
@@ -98,7 +97,7 @@ O componente mais crítico deste projeto é o `system_instruction` localizado no
 
 * **Persona e Tom de Voz:** Define quem o chatbot é.
 * **Guia de Conversação:** Ensina como responder a diferentes cenários com exemplos práticos.
-* **Resumo Analítico:** Uma seção gerada automaticamente via Pandas a partir dos múltiplos datasets da SComfort, garantindo que o conhecimento do bot é um reflexo fiel e orgânico dos dados da empresa.
+* **Conhecimentos e Insights** Uma seção gerada para alimentar o modelo com informações precisas sobre a empresa e seus produtos, além de instigar o usuário/cliente a continuar de olho na empresa para próximos lançamentos.    
 * **Princípios de Interação Avançada:** Regras para ser proativo, ajudar clientes indecisos e realizar vendas cruzadas.
 
 ## 🔮 Próximos Passos e Melhorias Futuras
